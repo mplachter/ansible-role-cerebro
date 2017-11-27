@@ -1,0 +1,54 @@
+# Secret will be used to sign session cookies, CSRF tokens and for other encryption utilities.
+# It is highly recommended to change this value before running cerebro in production.
+secret = "{{ cerebro_play_secret }}"
+
+# Application base path
+basePath = "/"
+
+# Defaults to RUNNING_PID at the root directory of the app.
+# To avoid creating a PID file set this value to /dev/null
+pidfile.path=/dev/null
+
+# Rest request history max size per user
+rest.history.size = {{ cerebro_rest_history }} // defaults to 50 if not specified
+
+# Path of local database file
+data.path = "{{ cerebro_local_data_path }}"
+
+{% if cerebro_ldap_auth is defined %}
+# Authentication
+auth = {
+  type: ldap
+    settings: {
+      url = "{{ cerebro_ldap_auth.url }}"
+      base-dn = "{{ cerebro_ldap_auth.base_dn }}"
+      method  = "{{ cerebro_ldap_auth.method }}"
+      user-domain = "{{ cerebro_ldap_auth.user_domain }}"
+    }
+{% if cerebro_ldap_auth.user_auth is defined %}
+  type: basic
+    settings: {
+      username = "{{ cerebro_ldap_auth.user_auth.username }}"
+      password = "{{ cerebro_ldap_auth.user_auth.password }}"
+    }
+{% endif %}
+}
+
+{% endif %}
+{% if cerebro_es_hosts is defined %}
+# A list of known hosts
+hosts = [
+{% for cerebro_es_host in cerebro_es_hosts %}
+  {
+    host = "{{ cerebro_es_host.host }}"
+    name = "{{ cerebro_es_host.name }}"
+{% if cerebro_es_host.es_auth is defined %}
+    auth = {
+      username = "{{ cerebro_es_host.es_auth.username }}"
+      password = "{{ cerebro_es_host.es_auth.password }}"
+    }
+{% endif %}
+  }{{ ',' if not loop.last else '' }}
+{% endfor %}
+]
+{% endif %}

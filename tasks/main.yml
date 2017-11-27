@@ -1,0 +1,44 @@
+---
+# tasks file for ansible-role-cerebro
+- name: Creating Cerebro directory
+  file:
+    path: "{{ cerebro_install_dir }}"
+    owner: "{{ cerebro_owner }}"
+    group: "{{ cerebro_group }}"
+    state: directory
+    mode: 0664
+
+- name: Downloading Cerebro
+  unarchive:
+    src: "{{ cerebro_download_url }}"
+    dest: "{{ cerebro_install_dir }}"
+    owner: "{{ cerebro_owner }}"
+    group: "{{ cerebro_group }}"
+    remote_src: yes
+    creates: "{{ cerebro_install_dir }}/cerebro-{{ cerebro_version }}/bin"
+  notify: Restart Cerebro
+
+- name: Creating Cerebro directory
+  file:
+    src: "{{ cerebro_install_dir }}/cerebro-{{ cerebro_version }}"
+    path: "{{ cerebro_dir }}"
+    force: yes
+    state: link
+
+- name: Configuring Cerebro application.conf
+  template:
+    src: ../templates/application.conf.j2
+    dest: "{{ cerebro_dir }}/conf/application.conf"
+    owner: "{{ cerebro_owner }}"
+    group: "{{ cerebro_group }}"
+    mode: 0664
+  notify: Restart Cerebro
+
+- name: Configuring Cerebro Service
+  template:
+    src: ../templates/cerebro.service.j2
+    dest: /etc/systemd/system/cerebro.service
+    owner: "{{ cerebro_owner }}"
+    group: "{{ cerebro_group }}"
+    mode: 0660
+  notify: Restart Cerebro

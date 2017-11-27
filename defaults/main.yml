@@ -1,0 +1,15 @@
+---
+# defaults file for ansible-role-cerebro
+
+cerebro_install_dir: /opt
+cerebro_version: 0.7.1
+
+cerebro_group: root
+cerebro_owner: root
+
+cerebro_port: 9000
+cerebro_http_address: 127.0.0.1
+
+cerebro_local_data_path: ./cerebro.db
+cerebro_play_secret: ki:s:[[@=Ag?QI`W2jMwkY:eqvrJ]JqoJyi2axj3ZvOv^/KavOT4ViJSv?6YY4[N
+cerebro_rest_history: 50

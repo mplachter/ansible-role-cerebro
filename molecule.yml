@@ -1,0 +1,40 @@
+---
+dependency:
+  name: galaxy
+  requirements_file: tests/requirements.yml
+ansible:
+  playbook: tests/test.yml
+  verbose: False
+driver:
+  name: docker
+docker:
+  containers:
+    - name: ansible-role-centos7-cerebro
+      hostname: ansible-role-centos7-cerebro
+      image: mplachter/docker-centos7-molecule
+      image_version: latest
+      privileged: True
+      cap_add:
+        - SYS_ADMIN
+      volume:
+        - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+      command: "/usr/sbin/init"
+      ansible_groups:
+        - cerebro
+    - name: ansible-role-centos7-cerebro-config
+      hostname: ansible-role-centos7-cerebro-config
+      image: mplachter/docker-centos7-molecule
+      image_version: latest
+      privileged: True
+      cap_add:
+        - SYS_ADMIN
+      volume:
+        - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+      command: "/usr/sbin/init"
+      ansible_groups:
+        - cerebro
+        - config
+verifier:
+  name: testinfra
+  options:
+      verbose: true

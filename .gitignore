@@ -1,0 +1,6 @@
+*.retry
+.cache
+.molecule
+.vscode
+roles/
+__pycache__

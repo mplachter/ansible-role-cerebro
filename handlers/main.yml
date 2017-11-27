@@ -1,0 +1,8 @@
+---
+# handlers file for ansible-role-cerebro
+- name: Restart Cerebro service Centos/RedHat 7 and Amazon
+  systemd:
+    name: cerebro
+    state: restarted
+    enabled: yes
+  listen: Restart Cerebro

@@ -1,0 +1,8 @@
+cerebro_es_hosts:
+  - name: prod_cluster
+    host: http://localhost:9200
+  - name: prod_cluster_auth
+    host: http://localhost2:9200
+    es_auth:
+      username: username
+      password: secret-password

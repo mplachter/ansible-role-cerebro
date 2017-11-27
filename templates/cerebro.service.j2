@@ -1,0 +1,13 @@
+[Unit]
+Description=Cerebro Application On %I
+After=network.target
+
+[Service]
+Type=simple
+User={{ cerebro_owner}}
+WorkingDirectory={{cerebro_dir}}
+PIDFile={{cerebro_dir}}/%i.pid
+ExecStart={{cerebro_dir}}/bin/cerebro -Dconfig.file={{cerebro_dir}}/conf/application.conf -Dhttp.port={{cerebro_port}} -Dhttp.address={{ cerebro_http_address }}
+
+[Install]
+WantedBy=multi-user.target
