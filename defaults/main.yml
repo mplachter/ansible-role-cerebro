@@ -8,7 +8,7 @@ cerebro_group: root
 cerebro_owner: root
 
 cerebro_port: 9000
-cerebro_http_address: 127.0.0.1
+cerebro_http_address: 0.0.0.0
 
 cerebro_local_data_path: ./cerebro.db
 cerebro_play_secret: ki:s:[[@=Ag?QI`W2jMwkY:eqvrJ]JqoJyi2axj3ZvOv^/KavOT4ViJSv?6YY4[N

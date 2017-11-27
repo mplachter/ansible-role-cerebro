@@ -29,5 +29,6 @@ def test_cerebro_running_and_enabled(Service):
     assert svc.is_enabled
 
 
-def test_cerebro_listener(Socket, SystemInfo):
-    assert Socket('tcp://127.0.0.1:9000').is_listening
+def test_cerebro_listener(Command):
+        listener = Command("netstat -ant")
+        assert '9000' in listener.stdout

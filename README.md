@@ -1,3 +1,5 @@
+[![Ansible Role](https://img.shields.io/ansible/role/22414.svg)](https://galaxy.ansible.com/mplachter/cerebro/) [![Build Status](https://travis-ci.org/mplachter/ansible-role-cerebro.svg?branch=master)](https://travis-ci.org/mplachter/ansible-role-cerebro)
+
 # ansible-role-cerebro
 
 This is an ansible role for installing and configuring [cerebro](https://github.com/lmenezes/cerebro).
@@ -18,7 +20,7 @@ cerebro_version: 0.7.1
 cerebro_group: root
 cerebro_owner: root
 cerebro_port: 9000
-cerebro_http_address: 127.0.01
+cerebro_http_address: 0.0.0.0
 ```
 
 ### Cerebro app configuration
@@ -58,6 +60,7 @@ This role will also install the following Dependencies
 ```
 ---
 - hosts: all
+  become: true
   roles:
     - role: mplachter.cerebro
   vars:
@@ -80,6 +83,7 @@ This role will also install the following Dependencies
 ```
 ---
 - hosts: all
+  become: true
   roles:
     - role: mplachter.cerebro
 ```
