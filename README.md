@@ -50,7 +50,7 @@ cerebro_ldap_auth:
 
 ## Dependencies
 
-This role will also install the following Dependencies
+This role will also install the following Dependencies unless the `cerebro_skip_java_install: true` variable is set.
 
 * geerlingguy.java
   * jdk 1.8.0
