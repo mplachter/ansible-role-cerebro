@@ -185,5 +185,13 @@ galaxy_info:
 
 dependencies:
   - role: geerlingguy.java
-    when: "cerebro_skip_java_install != true"
+    when:
+      - "cerebro_skip_java_install != true"
+      - "ansible_os_family == 'RedHat'"
     java_packages: java-1.8.0-openjdk
+
+  - role: geerlingguy.java
+    when:
+      - "cerebro_skip_java_install != true"
+      - "ansible_os_family == 'Debian'"
+    java_packages: openjdk-8-jdk
