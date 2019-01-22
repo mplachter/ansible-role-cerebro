@@ -185,5 +185,5 @@ galaxy_info:
 
 dependencies:
   - role: geerlingguy.java
-    when: "cerebro_skip_java_install != true"
+    when: "not cerebro_skip_java_install"
     java_packages: java-1.8.0-openjdk
