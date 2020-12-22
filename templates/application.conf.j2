@@ -3,7 +3,7 @@
 secret = "{{ cerebro_play_secret }}"
 
 # Application base path
-basePath = "/"
+basePath = "{{ cerebro_base_path | default("/")}}"
 
 # Defaults to RUNNING_PID at the root directory of the app.
 # To avoid creating a PID file set this value to /dev/null
