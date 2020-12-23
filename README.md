@@ -35,17 +35,40 @@ cerebro_es_hosts:
     host: http://elasticsearch.com
 ```
 
-### Configuration for LDAP
+### Configuration for LDAP or Basic authentication
 
 ```
-cerebro_ldap_auth:
-  url: ldap://host:port
-  base_dn: ou=active,ou=Employee
-  method: simple
-  user_domain: domain.com
-  user_auth:
-    username: admin
-    password: 1234
+cerebro_auth_basic:
+  username: justereseau
+  password: templatetempo
+
+cerebro_auth_ldap:
+  url: ldap://dc.compagnie.com:389
+  # OpenLDAP might be something like "ou=People,dc=domain,dc=com"
+  base_dn: ou=People,dc=domain,dc=com
+  # Usually method should  be "simple" otherwise, set it to the SASL mechanisms to try
+  method: simple #default: simple
+  # user-template executes a string.format() operation where
+  # username is passed in first, followed by base-dn. Some examples
+  # - %s => leave user untouched
+  # - %s@domain.com => append "@domain.com" to username
+  # - uid=%s,%s => usual case of OpenLDAP
+  user-template: d # optional
+  # User identifier that can perform searches
+  bind_dn: d # optional
+  bind_pw: s # optional
+  group_search:
+    # If left unset parent's base-dn will be used
+    base_dn: d
+    # Attribute that represent the user, for example uid or mail
+    user_attr: q
+    # Define a separate template for user-attr
+    # If left unset parent's user-template will be used
+    user_attr_template: d
+    # Filter that tests membership of the group. If this property is empty then there is no group membership check
+    # AD example => memberOf=CN=mygroup,ou=ouofthegroup,DC=domain,DC=com
+    # OpenLDAP example => CN=mygroup
+    group: d
 ```
 
 ## Dependencies

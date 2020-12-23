@@ -22,6 +22,9 @@
   file:
     src: "{{ cerebro_install_dir }}/cerebro-{{ cerebro_version }}"
     path: "{{ cerebro_dir }}"
+    owner: "{{ cerebro_owner }}"
+    group: "{{ cerebro_group }}"
+    mode: 0755
     force: yes
     state: link
 
@@ -33,6 +36,14 @@
     group: "{{ cerebro_group }}"
     mode: 0664
   notify: Restart Cerebro
+
+- name: Fix Cerbero ownership
+  file:
+    state: directory
+    dest: "{{ cerebro_install_dir }}"
+    owner: "{{ cerebro_owner }}"
+    group: "{{ cerebro_group }}"
+    mode: 0755
 
 - name: Configuring Cerebro Service
   template:
