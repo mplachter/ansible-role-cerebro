@@ -15,26 +15,36 @@ rest.history.size = {{ cerebro_rest_history }} // defaults to 50 if not specifie
 # Path of local database file
 data.path = "{{ cerebro_local_data_path }}"
 
-{% if cerebro_ldap_auth is defined %}
+{% if cerebro_auth_ldap is defined %}
 # Authentication
 auth = {
   type: ldap
-    settings: {
-      url = "{{ cerebro_ldap_auth.url }}"
-      base-dn = "{{ cerebro_ldap_auth.base_dn }}"
-      method  = "{{ cerebro_ldap_auth.method }}"
-      user-domain = "{{ cerebro_ldap_auth.user_domain }}"
+  settings {
+    url = "{{ cerebro_auth_ldap.url }}"
+    base-dn = "{{ cerebro_auth_ldap.base_dn }}"
+    method = {{ cerebro_auth_ldap.method | default("simple") }}
+    user-template = "{{ cerebro_auth_ldap.user_template | default("%s") }}"
+    bind-dn = "{{ cerebro_auth_ldap.bind_dn }}"
+    bind-pw = "{{ cerebro_auth_ldap.bind_pw }}"
+    group-search {
+      base-dn = "{{ cerebro_auth_ldap.group_search.base_dn | default(cerebro_auth_ldap.base_dn) }}"
+      user-attr = "{{ cerebro_auth_ldap.group_search.user_attr | default("uid") }}"
+      {%+ if cerebro_auth_ldap.group_search.user_attr_template is defined %}user-attr-template = "{{ cerebro_auth_ldap.group_search.user_attr_template }}"{% endif %}
+      {%+ if cerebro_auth_ldap.group_search.group is defined %}group = "{{ cerebro_auth_ldap.group_search.group }}"{% endif %}
     }
-{% if cerebro_ldap_auth.user_auth is defined %}
-  type: basic
-    settings: {
-      username = "{{ cerebro_ldap_auth.user_auth.username }}"
-      password = "{{ cerebro_ldap_auth.user_auth.password }}"
-    }
-{% endif %}
+  }
 }
-
+{% elif cerebro_auth_basic is defined %}
+# Authentication
+auth = {
+  type: basic
+  settings: {
+    username = "{{ cerebro_auth_basic.username | default("admin") }}"
+    password = "{{ cerebro_auth_basic.password | default("Bacon123") }}"
+  }
+}
 {% endif %}
+
 {% if cerebro_es_hosts is defined %}
 # A list of known hosts
 hosts = [
